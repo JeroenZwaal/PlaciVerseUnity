@@ -11,9 +11,6 @@ namespace Assets.Code
 {
     public class SceneLoader : MonoBehaviour
     {
-        public GetEnvironments getEnvironments;
-        //public GetObjects getObjects;
-
         public void LoadLoginScene()
         {
             SceneManager.LoadScene("LoginScene");
@@ -32,15 +29,11 @@ namespace Assets.Code
         public async void LoadEnvironmentsScene()
         {
             await SceneManager.LoadSceneAsync("AllEnvironmentsScene");
-            await Task.Yield();
-            getEnvironments = FindObjectOfType<GetEnvironments>();
-            getEnvironments.GetEnvironment2Ds();
         }
 
         public async void LoadCreateEnvironmentScene()
         {
             await SceneManager.LoadSceneAsync("CreateEnvironmentScene");
-            await Task.Yield();
         }
 
     }

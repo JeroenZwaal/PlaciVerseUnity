@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 63070422c9a76554c977b6dfc776b64d
+guid: 8466aad2a99a5e249bd6b87e9fd13825
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1627863557128286814
-    second: pixel_world_0
+      213: 2522395246819852605
+    second: simple-travel-car-top_view_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pixel_world_0
+      name: simple-travel-car-top_view_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 643
-        height: 360
+        width: 250
+        height: 124
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e527f69c745579610800000000000000
-      internalID: 1627863557128286814
+      spriteID: d31c4dddc19510320800000000000000
+      internalID: 2522395246819852605
       vertices: []
       indices: 
       edges: []
@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      simple-travel-car-top_view_0: 2522395246819852605
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

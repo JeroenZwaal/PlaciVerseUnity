@@ -1406,7 +1406,7 @@ MonoBehaviour:
   environment2D:
     Id: 0
     Name: 
-    MaxLength: 0
+    MaxLenght: 0
     MaxHeight: 0
   nameInput: {fileID: 1314830100}
   heightInput: {fileID: 456354112}
@@ -1453,12 +1453,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contentParent: {fileID: 0}
-  listItemPrefab: {fileID: 0}
+  EnvironmentPrefab: {fileID: 0}
   enviroment2DApiClient: {fileID: 0}
   environment2D:
     Id: 0
     Name: 
-    MaxLength: 0
+    MaxLenght: 0
     MaxHeight: 0
   deleteEnvironment: {fileID: 0}
 --- !u!1 &798939149
@@ -1718,7 +1718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1627863557128286814, guid: 63070422c9a76554c977b6dfc776b64d, type: 3}
+  m_Sprite: {fileID: 38127525550378569, guid: 05d91face1112e64d84b61214630cd5e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

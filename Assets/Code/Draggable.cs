@@ -9,41 +9,47 @@ namespace Assets.Code
 {
     public class Draggable : MonoBehaviour 
     {
-        private bool isDragging = false;
-        //private CreateObjects createObjects;
+        public Transform trans;
+        public GameObject SideBar;
+
+        public bool isDragging = false;
 
         public void StartDragging()
         {
             isDragging = true;
         }
 
-        private void Update()
+        public void Update()
         {
             if (isDragging)
-                transform.position = GetMousePosition();
+                trans.position = GetMousePosition();
         }
 
         private void OnMouseUpAsButton()
         {
-            if (isDragging)
+            isDragging = !isDragging;
+
+            if (!isDragging)
             {
-                isDragging = false;
+                SideBar.SetActive(true);
                 SavePosition();
             }
         }
 
         private Vector3 GetMousePosition()
         {
-            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            pos.z = 0;
-            return pos;
+            Vector3 positionInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            positionInWorld.z = 0;
+            return positionInWorld;
         }
 
         private void SavePosition()
         {
-            //Debug.Log($"Positie opgeslagen: {transform.position}");
-            //createObjects ??= FindObjectOfType<CreateObjects>();
-            //createObjects.SaveObjectData();
+            CreateObject createObject = FindAnyObjectByType<CreateObject>();
+            if (createObject != null)
+            {
+                createObject.SaveObject2D();
+            }
         }
     }
 }

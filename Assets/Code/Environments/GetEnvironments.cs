@@ -13,7 +13,7 @@ namespace Assets.Code.Environments
     public class GetEnvironments : MonoBehaviour
     {
         [SerializeField] public Transform contentParent;
-        [SerializeField] public GameObject EnvironmentPrefab;
+        [SerializeField] public GameObject environmentPrefab;
         public Environment2DApiClient enviroment2DApiClient;
 
         //public GetObjects getObjects;
@@ -47,7 +47,7 @@ namespace Assets.Code.Environments
         {
             foreach (var environment in environments)
             {
-                GameObject newEnv = Instantiate(EnvironmentPrefab, contentParent);
+                GameObject newEnv = Instantiate(environmentPrefab, contentParent);
                 SetupEnvironmentUI(newEnv, environment, deleteEnvironment);
             }
         }
@@ -82,7 +82,7 @@ namespace Assets.Code.Environments
 
         public async void SeeEnvironment(int id)
         {
-            PlayerPrefs.SetString("CurrentEnvironmentId", id.ToString());
+            PlayerPrefs.SetInt("CurrentEnvironmentId", id);
             PlayerPrefs.Save();
             await SceneManager.LoadSceneAsync("EnvironmentScene");
             //await Task.Yield();
