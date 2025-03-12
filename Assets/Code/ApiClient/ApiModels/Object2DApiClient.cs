@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using Newtonsoft.Json;
+using Unity.VisualScripting.Antlr3.Runtime;
 
 namespace Assets.Code.ApiClient
 {
@@ -35,10 +36,10 @@ namespace Assets.Code.ApiClient
             string token = PlayerPrefs.GetString("Token", "");
 
             Dictionary<string, string> headers = new Dictionary<string, string>
-        {
-            { "Authorization", "Bearer " + token },
-            { "Content-Type", "application/json" }
-    };
+            {
+                { "Authorization", "Bearer " + token },
+                { "Content-Type", "application/json" }
+            };
 
             IWebRequestResponse webRequestResponse = await webClient.SendPostRequest(route, data, headers);
             return ParseObject2DResponse(webRequestResponse);
@@ -46,9 +47,31 @@ namespace Assets.Code.ApiClient
 
         public async Awaitable<IWebRequestResponse> UpdateObject2D(Object2D object2D)
         {
-            string route = "/environments/" + object2D.EnvironmentId + "/objects/" + object2D.Id;
+            string route = "/objects/" + object2D.ObjectId;
             string data = JsonUtility.ToJson(object2D);
-            return await webClient.SendPutRequest(route, data);
+            string token = PlayerPrefs.GetString("Token", "");
+
+            Dictionary<string, string> headers = new Dictionary<string, string>
+            {
+                { "Authorization", "Bearer " + token },
+                { "Content-Type", "application/json" }
+            };
+
+            return await webClient.SendPutRequest(route, data, headers);
+        }
+
+        public async Awaitable<IWebRequestResponse> DeleteObject2D(int ObjectId)
+        {
+            string route = "/objects/" + ObjectId;
+            string token = PlayerPrefs.GetString("Token", "");
+
+            Dictionary<string, string> headers = new Dictionary<string, string>
+            {
+                { "Authorization", "Bearer " + token },
+                { "Content-Type", "application/json" }
+            };
+
+            return await webClient.SendDeleteRequest(route, headers: headers);
         }
 
         private IWebRequestResponse ParseObject2DResponse(IWebRequestResponse webRequestResponse)
@@ -57,7 +80,7 @@ namespace Assets.Code.ApiClient
             {
                 case WebRequestData<string> data:
                     //Debug.Log("Response data raw: " + data.Data);
-                    Object2D object2D = JsonUtility.FromJson<Object2D>(data.Data);
+                    Object2D object2D = JsonConvert.DeserializeObject<Object2D>(data.Data);
                     WebRequestData<Object2D> parsedWebRequestData = new WebRequestData<Object2D>(object2D);
                     return parsedWebRequestData;
                 default:

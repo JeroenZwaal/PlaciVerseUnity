@@ -11,7 +11,7 @@ namespace Assets.Code.Models
     public class Object2D
     {
         [JsonProperty("objectId")]
-        public int Id;
+        public int ObjectId;
 
         [JsonProperty("environmentId")]
         public int EnvironmentId;
@@ -26,10 +26,10 @@ namespace Assets.Code.Models
         public float PositionY;
 
         [JsonProperty("scaleX")]
-        public float scaleX;
+        public float ScaleX;
 
         [JsonProperty("scaleY")]
-        public float scaleY;
+        public float ScaleY;
 
         [JsonProperty("rotationZ")]
         public float RotationZ;

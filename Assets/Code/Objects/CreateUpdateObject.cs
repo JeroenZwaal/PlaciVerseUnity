@@ -2,10 +2,12 @@ using Assets.Code;
 using Assets.Code.ApiClient;
 using Assets.Code.ApiClient.WebRequestResponses;
 using Assets.Code.Models;
+using Assets.Code.Objects;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CreateObject : MonoBehaviour
+public class CreateUpdateObject : MonoBehaviour
 {
     public Object2DApiClient object2DApiClient;
     public GameObject sideBar;
@@ -59,23 +61,41 @@ public class CreateObject : MonoBehaviour
         
     }
 
-    public void SaveObject2D()
+    public void SaveObject2D(GameObject current)
     {
+        currentCar = current;
         if (currentCar == null) return;
+        ObjectIdentifier identifier = currentCar.GetComponent<ObjectIdentifier>();
+       
+        if (identifier != null)
+        {
+            prefabId = identifier.PrefabId;
+        }
 
         Object2D object2D = new Object2D
         {
+            
             EnvironmentId = PlayerPrefs.GetInt("CurrentEnvironmentId"),
             PrefabId = prefabId,
             PositionX = currentCar.transform.position.x,
             PositionY = currentCar.transform.position.y,
-            scaleX = currentCar.transform.localScale.x,
-            scaleY = currentCar.transform.localScale.y,
+            ScaleX = currentCar.transform.localScale.x,
+            ScaleY = currentCar.transform.localScale.y,
             RotationZ = currentCar.transform.rotation.eulerAngles.z,
             SortingLayer = currentCar.GetComponent<Renderer>().sortingLayerID
         };
+        
 
-        CreateObject2D(object2D);
+        if (identifier != null && identifier.ObjectId != 0)
+        {
+            object2D.ObjectId = identifier.ObjectId;
+            UpdateObject2D(object2D);
+        }
+        else
+        {
+            CreateObject2D(object2D);
+        }
+            
     }
 
     public async void CreateObject2D(Object2D object2D)
@@ -85,10 +105,34 @@ public class CreateObject : MonoBehaviour
         switch (response)
         {
             case WebRequestData<Object2D> data:
+                ObjectIdentifier identifier = currentCar.GetComponent<ObjectIdentifier>();
+                if (identifier == null)
+                {
+                    identifier = currentCar.AddComponent<ObjectIdentifier>();
+                }
+                identifier.ObjectId = data.Data.ObjectId;
+                identifier.PrefabId = data.Data.PrefabId;
                 //Debug.Log($"Aangemaakt met ID: {data.Data.id}");
                 break;
             case WebRequestError error:
                 //Debug.LogError($"Fout: {error.ErrorMessage}");
+                break;
+        }
+    }
+
+
+    // Functie om een bestaand object bij te werken
+    private async Task UpdateObject2D(Object2D object2D)
+    {
+        IWebRequestResponse response = await object2DApiClient.UpdateObject2D(object2D);
+
+        switch (response)
+        {
+            case WebRequestData<Object2D> data:
+                //Debug.Log($"Object geüpdatet met ID: {data.Data.Id}");
+                break;
+            case WebRequestError error:
+                //Debug.LogError($"Fout bij bijwerken object: {error.ErrorMessage}");
                 break;
         }
     }

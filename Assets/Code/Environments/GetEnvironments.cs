@@ -85,9 +85,6 @@ namespace Assets.Code.Environments
             PlayerPrefs.SetInt("CurrentEnvironmentId", id);
             PlayerPrefs.Save();
             await SceneManager.LoadSceneAsync("EnvironmentScene");
-            //await Task.Yield();
-            //getObjects = FindObjectOfType<GetObjects>();
-            //getObjects.ReadObject2Ds(id);
         }
 
         public void ClearList()

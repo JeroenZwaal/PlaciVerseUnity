@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Assets.Code.ApiClient;
+using Assets.Code.Models;
+using Assets.Code.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +16,7 @@ namespace Assets.Code
         public GameObject SideBar;
 
         public bool isDragging = false;
+        public bool isOverTrashBin = false;
 
         public void StartDragging()
         {
@@ -31,8 +35,35 @@ namespace Assets.Code
 
             if (!isDragging)
             {
-                SideBar.SetActive(true);
-                SavePosition();
+                if (isOverTrashBin)
+                {
+                    DeleteObject deleteObject = FindAnyObjectByType<DeleteObject>();
+                    if (deleteObject != null)
+                    {
+                        deleteObject.DeleteObject2D(gameObject);
+                    }
+                }
+                else
+                {
+                    SideBar.SetActive(true);
+                    SavePosition(gameObject);
+                }
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("TrashBin"))
+            {
+                isOverTrashBin = true; 
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("TrashBin"))
+            {
+                isOverTrashBin = false; 
             }
         }
 
@@ -43,12 +74,12 @@ namespace Assets.Code
             return positionInWorld;
         }
 
-        private void SavePosition()
+        private void SavePosition(GameObject current)
         {
-            CreateObject createObject = FindAnyObjectByType<CreateObject>();
+            CreateUpdateObject createObject = FindAnyObjectByType<CreateUpdateObject>();
             if (createObject != null)
             {
-                createObject.SaveObject2D();
+                createObject.SaveObject2D(current);
             }
         }
     }

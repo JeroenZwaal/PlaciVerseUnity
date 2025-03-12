@@ -1,12 +1,15 @@
+using Assets.Code;
 using Assets.Code.ApiClient;
 using Assets.Code.ApiClient.WebRequestResponses;
 using Assets.Code.Models;
+using Assets.Code.Objects;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GetObjects : MonoBehaviour
 {
     public Object2DApiClient object2DApiClient;
+    public GameObject sideBar;
     public GameObject prefab;
 
     public void Start()
@@ -42,7 +45,16 @@ public class GetObjects : MonoBehaviour
     private void LoadSprites(Object2D obj)
     {
         GameObject newObject = Instantiate(prefab, new Vector3(obj.PositionX, obj.PositionY, 0), Quaternion.identity);
-        newObject.name = obj.Id.ToString();
+        newObject.transform.rotation = Quaternion.Euler(0, 0, obj.RotationZ);
+        newObject.GetComponent<Draggable>().SideBar = sideBar;
+
+        ObjectIdentifier identifier = newObject.GetComponent<ObjectIdentifier>();
+        if (identifier == null)
+        {
+            identifier = newObject.AddComponent<ObjectIdentifier>();
+        }
+        identifier.ObjectId = obj.ObjectId;
+        identifier.PrefabId = obj.PrefabId;
 
         SpriteRenderer spriteRenderer = newObject.GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -61,6 +73,13 @@ public class GetObjects : MonoBehaviour
             }
 
         }
+
+        Draggable logicScript = newObject.GetComponent<Draggable>();
+        if (logicScript != null)
+        {
+            logicScript.isDragging = false;
+        }
+        newObject.GetComponent<Renderer>().sortingLayerName = "Prefab";
 
     }
 }

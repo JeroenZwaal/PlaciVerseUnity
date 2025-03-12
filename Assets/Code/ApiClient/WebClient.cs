@@ -68,9 +68,14 @@ namespace Assets.Code.ApiClient
         }
 
 
-        public async Awaitable<IWebRequestResponse> SendPutRequest(string route, string data)
+        public async Awaitable<IWebRequestResponse> SendPutRequest(string route, string data, Dictionary<string, string> headers)
         {
             UnityWebRequest webRequest = CreateWebRequest("PUT", route, data);
+            foreach (var header in headers)
+            {
+                webRequest.SetRequestHeader(header.Key, header.Value);
+            }
+
             return await SendWebRequest(webRequest);
         }
 
